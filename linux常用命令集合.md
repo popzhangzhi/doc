@@ -17,3 +17,16 @@ _____
     tar –cvf 打包后的文件名称 打包源文件
     解压
     tar –xvf 名称 –C 指定目录
+###linux下使用scp命令
+___
+    scp是有Security的文件copy，基于ssh登录。 
+    命令基本格式： 
+    scp [OPTIONS] file_source file_target 
+    OPTIONS： 
+    -v 和大多数 linux 命令中的 -v 意思一样 , 用来显示进度 . 可以用来查看连接、认证、 或是配置错误 
+    -C 使能压缩选项 
+    -P 选择端口 . 注意 -p 已经被 rcp 使用 
+    从本地复制到远程 
+    scp /home/daisy/full.tar.gz root@172.19.2.75:/home/root      （然后会提示你输入另外那台172.19.2.75主机的root用户的登录密码，接着就开始copy了），复制目录加参数 -r 即可 
+    从远程复制到本地 
+    scp root@/172.19.2.75:/home/root/full.tar.gz /home/daisy/full.tar.gz
