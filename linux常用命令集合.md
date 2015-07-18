@@ -30,3 +30,7 @@ ___
     scp /home/daisy/full.tar.gz root@172.19.2.75:/home/root      （然后会提示你输入另外那台172.19.2.75主机的root用户的登录密码，接着就开始copy了），复制目录加参数 -r 即可 
     从远程复制到本地 
     scp root@/172.19.2.75:/home/root/full.tar.gz /home/daisy/full.tar.gz
+###linux下文件权限
+___
+    dxxx xxx xxx 第一位文件夹or 文件 2-4 所谓文件者权限 5-7 用户组 8-9 其他组  rwx 4 2 1 ； 7 = 4+2+1 
+    ex. 655 777
