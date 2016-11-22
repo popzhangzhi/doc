@@ -160,6 +160,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 
 ---------------------
 关于服务提供者、服务容器、facedes三者的总结
+==
 	服务提供者 提供服务容器的绑定（register）和事件监听 中间件等注册（boot）
 	服务容器（$this->app）各种形式绑定 命名空间 到对应的类，单例、实例、接口、上下文绑定、原始值、标签。
 	facedes 为服务容易中 “静态”的提供接口，方便快捷
