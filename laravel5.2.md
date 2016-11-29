@@ -263,7 +263,8 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	whereBetween,whereNotBetween e.g. whereBetween('votes', [1, 100])
 	whereIn,whereNotIn e.g. whereIn('id', [1, 2, 3])
 	whereNull,whereNotNull whereNull('updated_at')
-	whereExists 创建where existSQL子句，whereExists方法接收一个闭包参数，该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：
+	whereExists 创建where existSQL子句，whereExists方法接收一个闭包参数，
+	该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：
 	whereRaw e.g. whereRaw('orders.user_id = users.id') 等同于where orders.user_id = users.id
 	select 可以用作需要的字段e.g. select('a','b as c')
 	addSelect 扩展selecct的字段 e.g. addSelect('a','b as c')
@@ -278,8 +279,10 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	havingRaw e.g. havingRaw('SUM(price) > 2500')
 	skip,take 跳过多少条目，取多少条记录
 	insert，update e.g.insert(['email' => 'john@example.com', 'votes' => 0]);
-	insertGetId e.g.insert(['email' => 'john@example.com', 'votes' => 0],'id'); 如果你想要从其他“序列”获取ID，可以将序列名作为第二个参数传递到insertGetId方法。
-	increment,decrement e.g.increment('votes', 5); 5为步长 ；可以额外更新->increment('votes', 1, ['name' => 'John']);
+	insertGetId e.g.insert(['email' => 'john@example.com', 'votes' => 0],'id'); 
+	如果你想要从其他“序列”获取ID，可以将序列名作为第二个参数传递到insertGetId方法。
+	increment,decrement e.g.increment('votes', 5); 5为步长 ；
+	可以额外更新->increment('votes', 1, ['name' => 'John']);
 	delete，truncate e.g.->delete(); truncate() 清空表
 	
 ####高级连接语言
@@ -316,7 +319,8 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 等同于
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 	
-whereExists方法允许你编写where existSQL子句，whereExists方法接收一个闭包参数，该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：
+whereExists方法允许你编写where existSQL子句，
+whereExists方法接收一个闭包参数，该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：
 	DB::table('users')->whereExists(function($query){
 		$query->select(DB::raw(1))
 			  ->from('orders')
@@ -326,11 +330,13 @@ whereExists方法允许你编写where existSQL子句，whereExists方法接收�
 等同于select * from users where exists( select 1 from orders where orders.user_id = users.id)
 
 ####悲观锁
+
 查询构建器还包含一些方法帮助你在select语句中实现“悲观锁”。可以在查询中使用sharedLock方法从而在运行语句时带一把”共享锁“。共享锁可以避免被选择的行被修改直到事务提交：
+
 	DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 此外你还可以使用lockForUpdate方法。“for update”锁避免选择行被其它共享锁修改或删除：	
-	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
 
+	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
 
 
 
