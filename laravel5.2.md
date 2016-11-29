@@ -178,7 +178,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	
 	服务容器（$this->app）各种形式绑定*命名空间*到对应的*类*，单例、实例、接口、上下文绑定、原始值、标签。
 	
-	facedes 为服务容器中 '静态'的提供接口，方便快捷,静态调用。
+	facedes是服务容器中 '静态'的提供接口，方便快捷,静态调用。
 
 ##5 laravel 数据库
 支持数据系统
@@ -250,12 +250,84 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	可以通过getPdo方法获取原生的PDO实例
 	DB::connection()->getPdo();
 
+###5.2 数据库查询构建器
+####DB方法集合
+ 	原生查询 statement用于无返回的情况 e.g.DB::select
+	select,insert,update,delete,statement
+	
+数据库查询构建器 e.g.DB::table()->get() 链式调用
+	table 选中表
+	get,first,value,lists get所有结果，first第一条，value一条的指定字段，lists 多条指定字段
+	where,orWhere 条件 e.g. ('id',1) ('id','=',1) 
+	whereBetween,whereNotBetween e.g. whereBetween('votes', [1, 100])
+	whereIn,whereNotIn e.g. whereIn('id', [1, 2, 3])
+	whereNull,whereNotNull whereNull('updated_at')
+	whereExists 创建where existSQL子句，whereExists方法接收一个闭包参数，该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：
+	whereRaw e.g. whereRaw('orders.user_id = users.id') 等同于where orders.user_id = users.id
+	select 可以用作需要的字段e.g. select('a','b as c')
+	addSelect 扩展selecct的字段 e.g. addSelect('a','b as c')
+	chunk 对得到的结果集进行分块处理
+	count,max,min,avg,sum 聚合函数
+	row 希望在查询中使用原生表达式，这些表达式将会以字符串的形式注入到查询中，所以要格外小心避免被 SQL注入
+	join，leftJoin，rightJoin e.g. leftJoin('posts', 'users.id', '=', 'posts.user_id')
+	
+	orderBy e.g. orderBy('name', 'desc')
+	groupBy e.g. groupBy('account_id')
+	having  e.g. having('account_id', '>', 100)
+	havingRaw e.g. havingRaw('SUM(price) > 2500')
+	skip,take 跳过多少条目，取多少条记录
+	insert，update e.g.insert(['email' => 'john@example.com', 'votes' => 0]);
+	insertGetId e.g.insert(['email' => 'john@example.com', 'votes' => 0],'id'); 如果你想要从其他“序列”获取ID，可以将序列名作为第二个参数传递到insertGetId方法。
+	increment,decrement e.g.increment('votes', 5); 5为步长 ；可以额外更新->increment('votes', 1, ['name' => 'John']);
+	delete，truncate e.g.->delete(); truncate() 清空表
+####高级连接语言
 
+	DB::table('users')->
+		join('表名',function($join){
+			$join->on('users.id','=','表名.user_id')->orOn(...);
+		})->get();
+	DB::table('users')
+        ->join('表名', function ($join) {
+            $join->on('users.id', '=', '表名.user_id')
+                 ->where('表名.user_id', '>', 5);
+        })
+        ->get();
+       
+####联合(union) 
+几个结果集的合并 列数相同，值相似即可。用limit order的时候可以带上() union 去除相同行，unionAll不去除
 
+	$first = DB::table('users')
+            ->whereNull('first_name');
 
+	$users = DB::table('users')
+            ->whereNull('last_name')
+            ->union($first)
+            ->get();
+         
+####高级where字句
+	DB::table('users')->where('name','=','John')
+		->orWhere(function ($query){
+			$query->where('vote','>',100)
+				  ->where('title','<>','Admin');
+		})
+		->get();
+等同于
+	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
+	
+whereExists方法允许你编写where existSQL子句，whereExists方法接收一个闭包参数，该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：
+	DB::table('users')->whereExists(function($query){
+		$query->select(DB::raw(1))
+			  ->from('orders')
+			  ->whereRaw('orders.user_id = users.id);
+		
+	})->get();	
+等同于select * from users where exists( select 1 from orders where orders.user_id = users.id)
 
-
-
+####悲观锁
+查询构建器还包含一些方法帮助你在select语句中实现“悲观锁”。可以在查询中使用sharedLock方法从而在运行语句时带一把”共享锁“。共享锁可以避免被选择的行被修改直到事务提交：
+	DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
+此外你还可以使用lockForUpdate方法。“for update”锁避免选择行被其它共享锁修改或删除：	
+	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
 
 
 
