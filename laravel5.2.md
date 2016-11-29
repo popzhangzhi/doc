@@ -320,6 +320,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 	
 whereExists方法允许你编写where existSQL子句，
+
 whereExists方法接收一个闭包参数，该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：
 	DB::table('users')->whereExists(function($query){
 		$query->select(DB::raw(1))
