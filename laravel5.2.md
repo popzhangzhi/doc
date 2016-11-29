@@ -1,4 +1,5 @@
 # laravel 学习笔记  version：5.2
+======
 ## 生命周期：
 		 从`index.php`->加载`bootstrap/app.php`后创建服务容器->分发至内核`http内核或者console内核`
 		内核配置错误处理、日志、检测环境、中间件、服务提供者->路由`router.php`->`控制器`
@@ -169,7 +170,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 ```
 正如你所看到的，被解析的对象将会传递给回调，从而允许你在对象被传递给消费者之前为其设置额外属性。
 
----------------------
+
 关于服务提供者、服务容器、facedes三者的总结
 ==
 	服务提供者提供服务容器的绑定（register）和事件监听、中间件等注册（boot）
