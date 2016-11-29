@@ -256,6 +256,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	select,insert,update,delete,statement
 	
 数据库查询构建器 e.g.DB::table()->get() 链式调用
+
 	table 选中表
 	get,first,value,lists get所有结果，first第一条，value一条的指定字段，lists 多条指定字段
 	where,orWhere 条件 e.g. ('id',1) ('id','=',1) 
@@ -280,6 +281,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	insertGetId e.g.insert(['email' => 'john@example.com', 'votes' => 0],'id'); 如果你想要从其他“序列”获取ID，可以将序列名作为第二个参数传递到insertGetId方法。
 	increment,decrement e.g.increment('votes', 5); 5为步长 ；可以额外更新->increment('votes', 1, ['name' => 'John']);
 	delete，truncate e.g.->delete(); truncate() 清空表
+	
 ####高级连接语言
 
 	DB::table('users')->
