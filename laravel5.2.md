@@ -206,7 +206,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	],
 如果想覆盖住数据中的配置，只需要将相应的配置项放到read和write数组中即可。在本例中，读和谐共用mysql的配置，
 ####运行原生SQL查询
-	参数绑定，避免SQL注入
+	#####参数绑定，避免SQL注入
 	DB::select('select * from users where active = ?',[1]);
 	DB::select('select * from users where id = :id',['id' => 1]);
 	DB::insert('insert into users (id,name) value (?,?)', [1,'Dayle']);
@@ -214,7 +214,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 	DB::delete('delete from users');
 	DB::statement('drop table user');
 	
-	在服务提供者中注册监听查询事件
+	#####在服务提供者中注册监听查询事件
 	<?php
 	namespace App\Providers;
 	use DB;
@@ -231,7 +231,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 		
 	}
 	
-	数据库事务
+	#####数据库事务
 	想要在一个数据库事务中运行一连串操作，可以使用DB门面的transaction方法，如果事务闭包中抛出异常，事务将会自动回滚，
 	如果闭包执行成功，事务将会自动提交。使用transaction方法不需要担心手动回滚或提交：
 	DB::transaction(function(){
@@ -239,12 +239,12 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 		DB::table('posts')->delete();
 	})
 	
-	手动提交事务
+	#####手动提交事务
 	DB::beginTransaction();
 	DB::rollBack();
 	DB::commit();
 	
-	使用多个数据库连接
+	#####使用多个数据库连接
 	使用多个数据库连接的时候，可以使用DB门面的connection方法访问每个连接。参数名来至配置文件
 	DB::connection('foo')->select();
 	可以通过getPdo方法获取原生的PDO实例
