@@ -319,7 +319,7 @@ $this->app->resolving(function (FooBar $fooBar, $app) {
 等同于
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 	
-whereExists方法允许你编写where existSQL子句，
+whereExists方法允许你编写where existSQL子句.
 
 whereExists方法接收一个闭包参数，该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：
 	DB::table('users')->whereExists(function($query){
@@ -339,30 +339,123 @@ whereExists方法接收一个闭包参数，该闭包获取一个查询构建器
 
 	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
 
+##Eloquent ORM
+
+注意我们并没有告诉 Eloquent 我们的Flight模型使用哪张表。默认规则是模型类名的复数作为与其对应的表名，除非在模型类中明确指定了其它名称
+```
+
+    //关联到模型的数据表
+    protected $table = 'my_flighs' ;
+    //主键
+    protected $primaryKey = 'id';
+
+    //表明模型是否应该被打上时间戳,Eloquent 期望created_at和updated_at已经存在于数据表中
+   
+    public $timestamps = false; 
+    //如果你需要自定义时间戳格式
+    protected $dateFormat = 'U';
+    //默认情况下，所有的 Eloquent 模型使用应用配置中的默认数据库连接，如果你想要为模型指定不同的连接，可以通过 $connection 属性来设置
+    protected $connection = 'connection-name';
+    //可以被批量赋值的属性.
+    protected $fillable = ['name'];
+    //不能被批量赋值的属性
+    protected $guarded = ['price'];
+```
+	
+    find(1),findOrFail(1)
+    save(),update()区别
+
+###匿名的全局作用域
+
+全局作用域允许我们为给定模型的所有查询添加条件约束。Laravel 自带的软删除功能就使用了全局作用域来从数据库中拉出所有没有被删除的模型。
+
+	<?php
+
+	namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+	use Illuminate\Database\Eloquent\Builder;
+
+	class User extends Model{
+	    /**
+	     * The "booting" method of the model.
+	     *
+	     * @return void
+	     */
+	    protected static function boot()
+	    {
+		parent::boot();
+
+		static::addGlobalScope('age', function(Builder $builder) {
+		    $builder->where('age', '>', 200);
+		});
+	    }
+	}
+
+  ####移除全局作用域
+    User::withoutGlobalScope(AgeScope::class)->get();
+    User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
+
+###本地作用域
+
+本地作用域允许我们定义通用的约束集合以便在应用中复用。例如，你可能经常需要获取最受欢迎的用户，要定义这样的一个作用域，只需简单在对应Eloquent模型方法前加上一个scope前缀，作用域总是返回查询构建器：
+
+	<?php
+
+	namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model{
+	    public function scopeOfType($query, $type)
+	    {
+		return $query->where('type', $type);
+	    }
+	}
+
+	$users = App\User::ofType('admin')->get();
+
+###事件
+
+Eloquent模型可以触发事件，允许你在模型生命周期中的多个时间点调用如下这些方法：creating, created, updating, updated, saving, saved,deleting, deleted, restoring, restored。事件允许你在一个指定模型类每次保存或更新的时候执行代码。
+
+一个新模型被首次保存的时候，creating和created事件会被触发。如果一个模型已经在数据库中存在并调用save方法，updating/updated事件会被触发，无论是创建还是更新，saving/saved事件都会被调用。
+
+举个例子，我们在服务提供者中定义一个Eloquent事件监听器，在事件监听器中，我们会调用给定模型的isValid方法，如果模型无效会返回false。如果从Eloquent事件监听器中返回false则取消save/update操作：
 
 
+	<?php
 
+	namespace App\Providers;
 
+	use App\User;
+	use Illuminate\Support\ServiceProvider;
 
+	class AppServiceProvider extends ServiceProvider{
+	    /**
+	     * 启动所有应用服务
+	     *
+	     * @return void
+	     */
+	    public function boot()
+	    {
+		User::creating(function ($user) {
+		    if ( ! $user->isValid()) {
+			return false;
+		    }
+		});
+	    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	    /**
+	     * 注册服务提供者.
+	     *
+	     * @return void
+	     */
+	    public function register()
+	    {
+		//
+	    }
+	}
 
 
 
