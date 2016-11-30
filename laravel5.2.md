@@ -458,12 +458,27 @@ Eloquent模型可以触发事件，允许你在模型生命周期中的多个时
 	}
 
 
+### Eloquent ORM关联关系
+
+一对一，关联模型，一个use模型对应一个phone模型，需要讲方法定义于user的模型。在该方法上定义hasOne方法（定义模式一对一关系）
+	<?php
+	namespace App;
+	use Illuminate\Database\Eloquent\Model;
+	class User extends Model{
+		//定义一对一模型
+		public function phone(){
+			return $this->hasOne('App\Phone','user_id','id');
+		}
+	}
 
 
+hasOne第一个参数是绑定的模型，第二个和第三个是可选填，第二个是App\phone对应User模型的外键，默认为User模型拼接上id,第三个参数是User的主键
 
+	$phone = User::find(1)->phone;
 
-
-
-
-
-
+同理根据phone模型 找到User模型
+在phone里声明
+	public function user(){
+	    return $this->belongsTo('App\User', 'user_id', 'id');
+	}
+第二个参数，第三个参数同上
