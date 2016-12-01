@@ -482,3 +482,36 @@ hasOne第一个参数是绑定的模型，第二个和第三个是可选填，�
 	    return $this->belongsTo('App\User', 'user_id', 'id');
 	}
 第二个参数，第三个参数同上
+
+
+#####利用中间模型实现一对多
+	<?php
+
+	namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class Country extends Model{
+	    /**
+	     * 获取指定国家的所有文章
+	     */
+	    public function posts()
+	    {
+		return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
+	    }
+	}
+第一个参数，最终访问的模型，第二个为中间模型，第三个，中间模型的外键，第四个，最终模型的外键
+
+####多对多的多态关联
+####动态属性（渴求式加载） and 链式条件约束Eloquent查询
+####查询已存在的关联关系
+
+	// 获取所有至少有一条评论的文章...
+	$posts = App\Post::has('comments')->get();
+
+####渴求式查询
+#####带条件约束的渴求式加载
+#####懒惰渴求式加载
+#####多对多关联(未读)
+
+###Eloquent 集合
