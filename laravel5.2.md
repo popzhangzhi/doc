@@ -514,4 +514,118 @@ hasOne第一个参数是绑定的模型，第二个和第三个是可选填，�
 #####懒惰渴求式加载
 #####多对多关联(未读)
 
-###Eloquent 集合
+####Eloquent 集合
+
+####Eloquent 访问器 修改器
+
+#####定义访问器
+
+在模型中建立一个getFooAttribute，其中Foo为字段，驼峰命名规则。
+在模型访问这个属性的时候会指定调用这个方法重写值
+	<?php
+	namespace App;
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model{
+		public function getFooAttribute($value){
+			return ucfirst($value);
+		}
+	}
+
+访问如下
+	$user = App\User::find(1);
+	$foo = $user->foo;
+
+####定义修改器
+在模型中建立修改器，定义SetFooAttribute方法。
+当掉on个set的时候，会对应修改
+	<?php
+	namespace App;
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model{
+		public function setFooAttribute($value){
+			$this->attributes['foo'] = strtolower($value);
+		}
+	}
+访问如下
+	$user =App\User::find(1);
+	$user->foo = "Sally";
+####属性转换
+
+模型中的$casts属性为属性字段转换到通用数据类型提供了便利方法 。$casts属性是数组格式，其键是要被转换的属性名称，其值时你想要转换的类型。目前支持的转换类型包括：integer, real, float, double, string, boolean, object，array，collection，date和datetime。
+	<?php
+
+	namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model{
+	    /**
+	     * 应该被转化为原生类型的属性
+	     *
+	     * @var array
+	     */
+	    protected $casts = [
+		'is_admin' => 'boolean',
+	    ];
+	}
+array类型转换在处理被存储为序列化 JSON 格式的字段时特别有用，例如，如果数据库有一个 TEXT 字段类型包含了序列化JSON，添加array类型转换到该属性将会在 Eloquent 模型中访问其值时自动将其反序列化为 PHP 数组：
+
+	<?php
+
+	namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model{
+	    /**
+	     * 应该被转化为原生类型的属性
+	     *
+	     * @var array
+	     */
+	    protected $casts = [
+		'options' => 'array',
+	    ];
+	}
+
+#####追加值到 JSON
+
+有时候，需要添加数据库中没有的字段到数组中，要实现这个功能，首先要为这个值定义一个访问器：
+
+	<?php
+
+	namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model{
+	    /**
+	     * 为用户获取管理员标识
+	     *
+	     * @return bool
+	     */
+	    public function getIsAdminAttribute()
+	    {
+		return $this->attributes['admin'] == 'yes';
+	    }
+	}
+定义好访问器后，添加字段名到该模型的 appends 属性：
+	<?php
+
+	namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model{
+	    /**
+	     * 追加到模型数组表单的访问器
+	     *
+	     * @var array
+	     */
+	    protected $appends = ['is_admin'];
+	}
+appends数组里会去找对应的字段，刚好在服务器里做逻辑判断。追加出新字段。
+
+
+##服务
