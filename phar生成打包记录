@@ -37,30 +37,20 @@
     }
  */
 
-
-
-
-
 $phar_name = "test.phar";
 $phar_alias ="";
 $src_path = "./src/";
 $build_path = "./build/";
-
 
 $phar_readonly = ini_get('phar.readonly');
 
 if((int)$phar_readonly == 0 ){
     echo "phar.readonly需要设置为Off，前往php.ini去设置 "   . PHP_EOL;
 }
-
-
-
-
+//删除已有包
 if(is_file($build_path.$phar_name)){
     unlink($build_path.$phar_name);
 }
-
-
 
 $phar = new Phar($build_path.$phar_name,
     FilesystemIterator::CURRENT_AS_FILEINFO |FilesystemIterator::KEY_AS_FILENAME,$phar_alias);
@@ -85,7 +75,6 @@ $phar->setStub($phar->createDefaultStub("index.php"));
  * 可以创建自己的stub文件来执行自定义的初始化过程，像这样加载自定义文件
  * $phar->setStub(file_get_contents("stub.php"))
  *
- *
  */
 
 /**
@@ -98,11 +87,6 @@ $phar->setStub($phar->createDefaultStub("index.php"));
  * ?>
  *
  * 这样就免去更改配置服务器
- *
- *
- *
- *
- *
  *
  *
  * 切记！
