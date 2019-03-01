@@ -1,6 +1,6 @@
 ### git部分常用命令
 #### a 几个commit合并成一个(用户多次提交后变成一次提交记录，或者编辑修改)
-  `
+  
   git log 用于查询commitId
   git rebase -i commintId
 进入vi模式进行选择pick和累加squash 
@@ -11,7 +11,7 @@
   fixup, 和squash类似, 但会舍弃commit信息. 可以用缩写f (红色)
   exec, 执行shell命令.可以用缩写x
   drop,剔除此次commit
-  `
+  
   
 部分出现错误后的命令
 git rebase --abort来忽略之前的rebase尝试,并恢复HEAD到开始的分支.
