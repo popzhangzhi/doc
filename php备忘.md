@@ -150,12 +150,11 @@ __
 	
 	
 	
-	发布时间：2007.04.13 09:25     来源：赛迪网技术社区    作者：skid
 	
 	操作系统:centos 4.3
 	软件列表:httpd-2.2.4.tar.gz, mysql-5.0.18.tar.gz, php-5.2.1.tar.gz
 	一．linux下安装mysql
-	小弟最近搞mysql源码安装,安装过程如下:
+	
 	安装步骤:
 	1.groupadd mysql
 	2.useradd -g mysql mysql
@@ -216,7 +215,6 @@ __
 	9. Tell Apache to parse certain extensions as PHP.
 	AddType application/x-httpd-php .php .phtml
 	AddType application/x-httpd-php-source .phps(T002)
-	
 	
 	
 	21 个非常有用的 .htaccess 提示和技巧
