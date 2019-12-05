@@ -1,9 +1,9 @@
 
- ### innodb引擎
+ # innodb引擎
  
   innoDb体系架构： 多个后台线程-》innoDb内存池-》磁盘文件 ，后台线程的主要作用是负责刷新内存池中的数据，保证缓冲池的数据是最近的，并且将修改数据刷新到磁盘。保证在数据库异常的时候innodb能恢复到正常
 	
- #### 后台线程::
+ ### 后台线程::
  
  1.Master Thread 主线程，负责将缓冲池的数据异步刷新到磁盘。包括脏页的刷新。合并插入缓冲、undo回收等
 
@@ -13,7 +13,7 @@
 
  4.page clear thread。在innodb 1.2后支持，作用是减轻master thread对于用户查询线程的阻塞。把脏页的刷新放进了单独的线程
 	
- #### 内存::
+ ### 内存::
  
  1.缓冲池，mysql是给予磁盘存储的数据库，为了弥补硬盘读写速度相对数据库慢的性能，划分一块内存来做缓冲。读数据，将数据fix到缓冲池后，
 	在返回。写入的时候，先写入缓冲后，再入磁盘。不是实时是通过checkpoint机制。配置innodb_buffer_pool_size 设置缓冲池大小缓存
@@ -36,3 +36,24 @@ set global innodb_old_blocks_time = 0;
 set GLOBAL innodb_old_blocks_pct=20 
 #来减少刷出的概率
 ```
+
+  4.LRU 列表用来管理已经读取的页，当数据库刚刚启动，LRU是空的。这个时候页都存在Free列表中。当需要从缓冲池分页时，首先从Free列表中找到是否有可用的空闲页，若有，则从Free列表中删除，放入LRU列表中。若无。根据LRU算法淘汰LRU尾部的页，分配给新页。当页从LRU列表old加入new部分，被称之为page made young，而因为innodb_old_blocks_time设置而导致页没有从old转移到new。称之为page no made young。
+  
+  5.通过命令show engine innodb status 可以查看到相关的信息。buffer pool size 代表缓冲池的页数 * 16k 可以算出缓冲池大小。通过buffer pool hit rate 可以看到缓冲池的命中率，通过该值不应该小于95%。如果出现要排查下是否由于全表扫描导致LRU列表污染。
+  
+  6.redo log buffer。 把重做日志缓冲刷新到重做日志文件，可由 innodb_log_buffer_size控制，默认16M。一般无需修改
+  
+ ```
+ 以下3种情况会触发
+ 	 master thread 每秒刷入重做日志文件
+	 每个事务提交时会刷入重做日志文件
+	 当重做日志缓冲池剩余空间小于二分之一时，会输入重做日志文件
+```
+7.checkpoint 将脏页数据输入磁盘的作用：1.缩短数据库恢复时间 2 缓冲池不够用，将脏页刷入磁盘 3 重做日志不可用时，刷新脏页
+	
+``` 
+有2中checkpoint
+	
+	sharp checkpoint 默认方式。发在数据库关闭的时候将所有脏页都刷入。也就是参数 innodb_fast_shutdwon =1
+	
+	fuzzy checkpoint 部分刷新到磁盘
