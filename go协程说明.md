@@ -6,6 +6,7 @@
 2.协程中输出未必能正常输出，协程和主进程交互可以通过chanel或者通过sync.mutex Lock(),在主进程中判断lock()后的标识来确认协程是否执行完其原理是共用相同内存并且带锁。
 
 3.可以声明单向chanel。只读，只取。
+
 	```
 	var ch1 chan int  　　　　// 普通channel
 	var ch2 chan <- int 　　 // 只用于写int数据
@@ -16,6 +17,7 @@
 	ch6 := chan<- int(ch4)  //单向写
 	单向channel的作用有点类似于c++中的const关键字，用于遵循代码“最小权限原则”。
 	```
+
 4.select 用于监听chanel的io，类似于swtich但只有一个case能执行，如果所有case都不能满足，可以执行default。default是可选的。不存在default的时候，会阻塞。等待某个case成立后执行一次。如果有满足多个case，会伪随机的执行其中一个case。在写的时候，只有带缓存的chanel才能写，不带的永远都不会满足case
 
 5.go chanel不会超时，但可以通过声明一个类似以下的chanel实现超时
