@@ -5,7 +5,7 @@ innoDb体系架构： 多个后台线程-》innoDb内存池-》磁盘文件 ，�
 	
  #### 后台线程::
  
-1.Master Thread 主线程，负责将缓冲池的数据异步刷新到磁盘。包括脏页？的刷新。合并插入缓冲、undo回收等
+1.Master Thread 主线程，负责将缓冲池的数据异步刷新到磁盘。包括脏页的刷新。合并插入缓冲、undo回收等
 
 2.IO Thread 。1.0后支持设置innodb_read_io_threads innodb_write_io_threads 设置读写io线程。写线程要大于读线程
 
@@ -16,7 +16,7 @@ innoDb体系架构： 多个后台线程-》innoDb内存池-》磁盘文件 ，�
  #### 内存::
  
 1.缓冲池，mysql是给予磁盘存储的数据库，为了弥补硬盘读写速度相对数据库慢的性能，划分一块内存来做缓冲。读数据，将数据fix到缓冲池后，
-	在返回。写入的时候，先写入缓冲后，在入磁盘。不是实时是通过checkpoint机制。配置innodb_buffer_pool_size 设置缓冲池大小缓存
+	在返回。写入的时候，先写入缓冲后，再入磁盘。不是实时是通过checkpoint机制。配置innodb_buffer_pool_size 设置缓冲池大小缓存
 	的数据有索引页，数据页，undo页，插入缓冲，自适应哈希索引，innodb存储的锁信息，数据字典信息。
 	
 2.从innodb 1.0后支持多个缓冲池实例 innodb_buffer_pool_instances 默认1，每个页根据哈希值平均分配到不通的缓冲池，减少数据库内部资源竞争，
