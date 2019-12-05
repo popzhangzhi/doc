@@ -2,6 +2,13 @@
  # innodb引擎
  
   innoDb体系架构： 多个后台线程-》innoDb内存池-》磁盘文件 ，后台线程的主要作用是负责刷新内存池中的数据，保证缓冲池的数据是最近的，并且将修改数据刷新到磁盘。保证在数据库异常的时候innodb能恢复到正常
+  
+  内存架构：重做日志缓冲 额外内存池 缓冲池。三者并列
+  	
+```	
+额外内存池：每个缓冲池的帧缓冲 （frame buffer） 还有对应的缓冲控制对象（buffer control block）。这些对象记录了LRU 锁 等待等信息需要从额外内存池中申请
+缓冲池： 数据页 插入缓冲 锁信息 索引页 自适应哈希索引 数据字典信息
+  
 	
  ### 后台线程::
  
@@ -41,7 +48,7 @@ set GLOBAL innodb_old_blocks_pct=20
   
   5.通过命令show engine innodb status 可以查看到相关的信息。buffer pool size 代表缓冲池的页数 * 16k 可以算出缓冲池大小。通过buffer pool hit rate 可以看到缓冲池的命中率，通过该值不应该小于95%。如果出现要排查下是否由于全表扫描导致LRU列表污染。
   
-  6.redo log buffer。 把重做日志缓冲刷新到重做日志文件，可由 innodb_log_buffer_size控制，默认16M。一般无需修改
+  6.redo log buffer。 把重做日志缓冲刷新到重做日志文件，可由 innodb_log_buffer_size控制，默认8M。一般无需修改
   
  ```
  以下3种情况会触发
