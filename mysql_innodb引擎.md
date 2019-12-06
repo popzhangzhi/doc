@@ -64,3 +64,17 @@ set GLOBAL innodb_old_blocks_pct=20
 	sharp checkpoint 默认方式。发在数据库关闭的时候将所有脏页都刷入。也就是参数 innodb_fast_shutdwon =1
 	
 	fuzzy checkpoint 部分刷新到磁盘
+		1.主线程以每秒和每十秒从缓冲池的脏页刷新到磁盘
+		2.innodb 1.1会保证LRU有差不多100个空闲页可使用，如果不足会将LRU列表尾端的页移除，如果这些页有脏页，则会checkpoint，innodb 1.2后会开异步线程，放在单独的page cleaner进行，用户可以设置innodb_lru_sacn_depth设置可用的页数量。默认1024
+		3.重做日志不可用时，会刷新脏页。如total_redo_log_file_size 设置重做日志大小。当脏页占整个重做日志文件的75%以下，不刷新，以上触发刷新。
+		4.脏页太多会触发checkpoint。innodb_max_dirty_pages_pct =75 .表示缓冲池脏页数量占据75%的时候强制触发checkpoint
+```
+
+### Master thread工作方式
+	
+#### innodb1.0之前的master thread
+	
+	
+	
+
+			
