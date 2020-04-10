@@ -31,7 +31,7 @@
 #### 设置系统主机名和host文件相互解析
 		hostnamectl set-hostname k8s-master01
 
-		添加对应的ip以及hostname
+  添加对应的ip以及hostname
 		vim /etc/hosts
 
 #### 安装相关的依赖包
