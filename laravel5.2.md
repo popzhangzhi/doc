@@ -1,5 +1,5 @@
 # laravel 学习笔记  version：5.2
-个人学习笔记，有错误欢迎指出。
+	个人学习笔记，有错误欢迎指出。
 
 ## 1 生命周期：
 		 从`index.php`->加载`bootstrap/app.php`后创建服务容器->分发至内核`http内核或者console内核`

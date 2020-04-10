@@ -1,5 +1,22 @@
 ### git部分常用命令
-#### a 几个commit合并成一个(用户多次提交后变成一次提交记录，或者编辑修改)
+      git init 
+      git remote add origin [远程仓库]
+      git add *
+      git commit -m "message"
+      git push [远程仓库] [分支名]
+      git pull [远程仓库] [分支名]
+
+      git checkout -b [分支名]  //创建分支切换过去
+      git checkout master //切换主分支
+      git branch -d [分支名] //删除分支
+      git push origin [分支名] // 推送分支到远程
+      git merge [分支名] //合并分支到当前分支
+      git add [fliename] //冲突文件解决后标记合并成功文件
+      丢失本地修改和提交，获取远程最新分支
+      git fetch orign
+      git reset --hard origin/master
+
+#### 几个commit合并成一个(用户多次提交后变成一次提交记录，或者编辑修改)
 
       用于查询commitId
       git log 
@@ -25,7 +42,7 @@
       git push -u orign master -f 
       git push -u（upsteam） [远程仓库] [本地仓库] -f(force)
 
-#### b 分支的一些命令
+#### 分支的一些命令
       git merge --abort 取消分支合并
       git reset --merge 重置分支
       git reset --mixed 默认git reset使用这个选项，回归到指定版本，当前源码不变化，源码与目标版本的差异未打入缓存区

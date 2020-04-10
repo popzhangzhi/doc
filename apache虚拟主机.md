@@ -1,4 +1,4 @@
-# apache 虚拟主机配置
+### apache 虚拟主机配置
     1．基于相同IP不同Port的虚拟主机
     
     1）vi/etc/http/conf/httpd.conf

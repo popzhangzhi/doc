@@ -3,7 +3,7 @@ ___
 	「闭包」和「匿名」这两个概念并不等价（虽然 PHP里面对应的都是同一个东西）。
 	匿名是指这个函数可以像变量一样操作，例如可以赋值给另一个变量、作为参数传递、作为函数的返回值等。	
 	闭包是指这个函数可以从上下文中捕获变量（而不是通过参数来传递），具体到 PHP 上就是 use 这个子句做的事情。
-__
+```
 	修改PHP上传文件大小限制的方法
 	1. 一般的文件上传,除非文件很小.就像一个5M的文件,很可能要超过一分钟才能上传完.
 	但在php中,默认的该页最久执行时间为 30 秒.就是说超过30秒,该脚本就停止执行.
@@ -23,7 +23,7 @@ __
 	upload_max_filesize = 100M
 	另外要说明的是,post_max_size 大于 upload_max_filesize 为佳.
 	Linux下默认安装lamp路径
-	
+```	
 	apache:
 	如果采用RPM包安装，安装路径应在 /etc/httpd目录下
 	apache配置文件:/etc/httpd/conf/httpd.conf
@@ -325,146 +325,4 @@ __
 	　　　　　　 2.  如果使用了负载均衡，限制的IP不要写外网IP,请填写内网IP。
 	
 	
-	Html 5 滑动特效
-	<style type="text/css">
-	.DDimg_android .DDimgArea_1 figure span:nth-of-type(5) {
-	background: url(__PUBLIC__/Img/ios_area1_5.png) no-repeat;
-	
-	}
-	
-	.DDimg_android .DDimgArea_2 article h3 {
-	background: url(__PUBLIC__/Img/ios_area2_h3.png) no-repeat;
-	width: 391px;
-	}
-	.DDimg_android .DDimgArea_2 .DDbtn span:nth-of-type(1) {
-	background: url(__PUBLIC__/Img/ios_area2_btn_1.png) no-repeat;
-	}
-	.DDimg_android .DDimgArea_2 .DDbtn span:nth-of-type(2) {
-	background: url(__PUBLIC__/Img/ios_area2_btn_2.png) no-repeat;
-	}
-	.DDimg_android .DDimgArea_2 .DDbtn span:nth-of-type(3) {
-	background: url(__PUBLIC__/Img/ios_area2_btn_3.png) no-repeat;
-	}
-	.DDimg_android .DDimgArea_2 article p {
-	background: url(__PUBLIC__/Img/ios_area2_p_1.png) no-repeat;
-	width:407px;
-	}
-	.DDimg_android .DDimgArea_2 figure span:nth-of-type(1) {
-	background: url(__PUBLIC__/Img/ios_area2_1.png) no-repeat center;
-	width: 291px;
-	height: 449px;
-	}
-	.DDimg_android .DDimgArea_2 figure span:nth-of-type(2) {
-	background: none;
-	}
-	.DDimg_android .DDimgArea_2 figure span:nth-of-type(3) {
-	background: url(__PUBLIC__/Img/ios_area2_2.png?ver=1) no-repeat;
-	}
-	.DDimg_android .DDimgArea_3 figure span:nth-of-type(1) {
-	background: url(__PUBLIC__/Img/ios_area3_1.png?ver=1) no-repeat center;
-	}
-	.DDimg_android .DDimgArea_3 figure span:nth-of-type(2) {
-	background: url(__PUBLIC__/Img/ios_area3_2.png) no-repeat;
-	width: 311px;
-	height: 354px;
-	
-	left: 190px;
-	top: 230px;
-	}
-	.DDimg_android .DDimgArea_3 article h3 {
-	background: url(__PUBLIC__/Img/ios_area3_h3.png) no-repeat;
-	width: 391px;
-	}
-	.DDimg_android .DDimgArea_3 .DDbtn span:nth-of-type(1) {
-	background: url(__PUBLIC__/Img/ios_area3_btn_1.png) no-repeat;
-	}
-	.DDimg_android .DDimgArea_3 .DDbtn span:nth-of-type(2) {
-	background: url(__PUBLIC__/Img/ios_area3_btn_2.png) no-repeat;
-	
-	}
-	.DDimg_android .DDimgArea_3 article p {
-	background: url(__PUBLIC__/Img/ios_area3_p.png) no-repeat;
-	width: 249px;
-	height: 47px
-	}
-	.DDimg_android .DDimgArea_6 figure span:nth-of-type(1) {
-	background: url(__PUBLIC__/Img/ios_area5_1.png) no-repeat center;
-	
-	width: 226px;
-	height: 418px;
-	}
-	.DDimg_android .DDimgArea_6.animation figure span:nth-of-type(1) {
-	top: 75px;
-	opacity: 1;
-	}
-	.DDimg_android .DDimgArea_6 figure span:nth-of-type(3) {
-	left:790px;
-	}
-	
-	</style>
-	<div class="DDimg DDimg_android">
-		<div class="DDimgArea DDimgArea_1">
-			<div class="bg"></div>
-			<figure><span></span><span></span><span></span><span></span><span></span></figure>
-			<article class="DDright">
-				<h3>海量应用 免费下载</h3>
-				<p></p>
-			</article>
-			<div class="DDbtn DDright"><span></span><span></span><span></span><span></span></div>
-		</div>
-		<div class="DDimgArea DDimgArea_2">
-			<div class="bg"></div>
-			<figure><span></span><span></span><span></span></figure>
-			<article class="DDleft">
-				<h3></h3>
-				<p></p>
-			</article>
-			<div class="DDbtn DDleft"><span></span><span></span><span></span></div>
-		</div>
-		<div class="DDimgArea DDimgArea_3">
-			<div class="bg"></div>
-			<figure><span></span><span></span></figure>
-			<article class="DDright">
-				<h3></h3>
-				<p></p>
-			</article>
-			<div class="DDbtn DDright"><span></span><span></span></div>
-		</div>
-		
-		<div class="DDimgArea DDimgArea_6">
-			<div class="bg"></div>
-			<figure><span></span><span></span><span></span></figure>
-			<article class="DDleft">
-				<h3></h3>
-				<p></p>
-			</article>
-			<div class="DDbtn DDleft"><span></span><span></span><span></span></div>
-		</div>
-	</div>
-	
-	<script type="text/javascript">
-	
-			
-	var animate=function(){
-		var topsize=$(window).scrollTop();
-		if(topsize>=460){
-			_value=1;
-			$(".DDimgArea_1").addClass("animation")
-			}
-		if(topsize>=1085){
-			_value=2;
-			$(".DDimgArea_2").addClass("animation")
-			}
-		if(topsize>=1710){
-			_value=3;
-			$(".DDimgArea_3").addClass("animation")
-			}
-		if(topsize>=2335){
-			_value=4;
-			$(".DDimgArea_6").addClass("animation")
-			}
-		
-		}
-	$(window).bind("scroll resize",animate);	
-	</script>
 	

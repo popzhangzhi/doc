@@ -1,5 +1,5 @@
 
- # innodb引擎
+ ### innodb引擎
  
   innoDb体系架构： 多个后台线程-》innoDb内存池-》磁盘文件 ，后台线程的主要作用是负责刷新内存池中的数据，保证缓冲池的数据是最近的，并且将修改数据刷新到磁盘。保证在数据库异常的时候innodb能恢复到正常
   
@@ -10,7 +10,7 @@
 缓冲池： 数据页 插入缓冲 锁信息 索引页 自适应哈希索引 数据字典信息
 ```  
 	
- ### 后台线程::
+ #### 后台线程::
  
  1.Master Thread 主线程，负责将缓冲池的数据异步刷新到磁盘。包括脏页的刷新。合并插入缓冲、undo回收等
 
@@ -70,9 +70,9 @@ set GLOBAL innodb_old_blocks_pct=20
 		4.脏页太多会触发checkpoint。innodb_max_dirty_pages_pct =75 .表示缓冲池脏页数量占据75%的时候强制触发checkpoint
 ```
 
-### Master thread工作方式
+#### Master thread工作方式
 	
-#### innodb1.0之前的master thread
+##### innodb1.0之前的master thread
 
 ```
 每秒操作包含 
@@ -90,7 +90,7 @@ set GLOBAL innodb_old_blocks_pct=20
 
 background loop ： 删除无用的undo页 合并20个插入缓冲 跳回主循环
 ```
-#### innodb 1.2之前的master thread
+##### innodb 1.2之前的master thread
 
 ```
 
