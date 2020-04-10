@@ -19,7 +19,7 @@
 	chmod 755 /etc/sysconfig/modules/ipvs.modules && bash /etc/sysconfig/modules/ipvs.modules &&
 	lsmod | grep -e ip_vs -e nf_conntrack_ipv4
 
-####安装docker
+#### 安装docker
 	yum install -y yum-utils device-mapper-persistent-data lvm2
 	yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 	yum update -y && yum install -y docker-ce	
@@ -89,9 +89,9 @@
 	 初始化并且输出。同时加入自然颁发证书参数
 	 kubeadm init --config=kubeadm-config.yaml --upload-certs | tee kubeadm-init.log
 
-	##### 按照输出log 加入主节点和工作节点
+##### 按照输出log 加入主节点和工作节点
 
-	####部署扁平网络flannel
+#### 部署扁平网络flannel
 
 	wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 	kubectl apply -f kube-flannel.yml
