@@ -29,10 +29,10 @@
 	添加 IPADDR NETMASK GATEWAY DNS1 网络相关数据
 	
 #### 设置系统主机名和host文件相互解析
-		hostnamectl set-hostname k8s-master01
+	hostnamectl set-hostname k8s-master01
 
-  添加对应的ip以及hostname
-		vim /etc/hosts
+##### 添加对应的ip以及hostname
+	vim /etc/hosts
 
 #### 安装相关的依赖包
 
@@ -54,7 +54,7 @@
 
 	vim kubernetes.conf 
 
-	插入
+##### 插入
 
 	net.bridge.bridge-nf-call-iptables=1 
 	net.bridge.bridge-nf-call-ip6tables=1 
@@ -70,7 +70,7 @@
 	net.ipv6.conf.all.disable_ipv6=1 
 	net.netfilter.nf_conntrack_max=2310720
 
-	移动配置文件并且内核生效该文件
+##### 移动配置文件并且内核生效该文件
 	cp kubernetes.conf /etc/sysctl.d/kubernetes.conf 
 	sysctl -p /etc/sysctl.d/kubernetes.conf
 
@@ -80,7 +80,7 @@
 	# 将当前的 UTC 时间写入硬件时钟 
 	timedatectl set-local-rtc 0 
 	
-	 重启依赖于系统时间的服务 
+##### 重启依赖于系统时间的服务 
 
 	systemctl restart rsyslog 
 	systemctl restart crond
@@ -95,7 +95,7 @@
 
 	vim /etc/systemd/journald.conf.d/99-prophet.conf 
 
-	插入
+##### 插入
 
 	[Journal]
 	# 持久化保存到磁盘 
@@ -114,7 +114,7 @@
 	# 不将日志转发到 
 	syslog ForwardToSyslog=no
 
-	启用
+##### 启用
 
 	systemctl restart systemd-journald
 
