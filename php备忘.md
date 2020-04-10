@@ -3,8 +3,8 @@ ___
 	「闭包」和「匿名」这两个概念并不等价（虽然 PHP里面对应的都是同一个东西）。
 	匿名是指这个函数可以像变量一样操作，例如可以赋值给另一个变量、作为参数传递、作为函数的返回值等。	
 	闭包是指这个函数可以从上下文中捕获变量（而不是通过参数来传递），具体到 PHP 上就是 use 这个子句做的事情。
-```
-	修改PHP上传文件大小限制的方法
+
+#### 修改PHP上传文件大小限制的方法
 	1. 一般的文件上传,除非文件很小.就像一个5M的文件,很可能要超过一分钟才能上传完.
 	但在php中,默认的该页最久执行时间为 30 秒.就是说超过30秒,该脚本就停止执行.
 	这就导致出现 无法打开网页的情况.这时我们可以修改 max_execution_time
@@ -23,22 +23,22 @@ ___
 	upload_max_filesize = 100M
 	另外要说明的是,post_max_size 大于 upload_max_filesize 为佳.
 	Linux下默认安装lamp路径
-```	
-	apache:
+
+#### apache:
 	如果采用RPM包安装，安装路径应在 /etc/httpd目录下
 	apache配置文件:/etc/httpd/conf/httpd.conf
 	Apache模块路径：/usr/sbin/apachectl
 	web目录:/var/www/html
 	如果采用源代码安装，一般默认安装在/usr/local/apache2目录下
 	
-	php:
+#### php:
 	如果采用RPM包安装，安装路径应在 /etc/目录下
 	php的配置文件:/etc/php.ini
 	如果采用源代码安装，一般默认安装在/usr/local/lib目录下
 	php配置文件: /usr/local/lib/php.ini
 	或/usr/local/php/etc/php.ini
 	
-	mysql:
+#### mysql:
 	如果采用RPM包安装，安装路径应在/usr/share/mysql目录下
 	mysqldump文件位置：/usr/bin/mysqldump
 	mysqli配置文件:
@@ -46,7 +46,7 @@ ___
 	mysql数据目录在/var/lib/mysql目录下
 	如果采用源代码安装，一般默认安装在/usr/local/mysql目录下
 	
-	Linux 下 LAMP YUM安装 centOs-5.x
+#### Linux 下 LAMP YUM安装 centOs-5.x
 	1、备份CentOS-Base.repo
 		cd /etc/yum.repos.d/ 
 		cp CentOS-Base.repo CentOS-Base.repo.bak
@@ -146,11 +146,6 @@ ___
 	
 	
 	
-	Linux上安装Apache+Php+Mysql的过程（php apache没问题 mysql 启动每秒重启错误）
-	
-	
-	
-	
 	操作系统:centos 4.3
 	软件列表:httpd-2.2.4.tar.gz, mysql-5.0.18.tar.gz, php-5.2.1.tar.gz
 	一．linux下安装mysql
@@ -222,16 +217,7 @@ ___
 	http://www.oschina.net/question/12_58586
 	
 	
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	
-	
-	2．基于相同Port不同IP的虚拟主机
+#### 基于相同Port不同IP的虚拟主机
 	
 	1）不同IP地址的配置：
 	#cd/etc/sysconfig/network-scripts
