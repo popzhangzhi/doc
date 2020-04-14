@@ -1,12 +1,13 @@
 ### k8s集群搭建
 
-#### kube-prox开启ipvs前置条件
+#### 1.kube-prox开启ipvs前置条件
 
 	modprobe br_netfilter
 
 	vim  /etc/sysconfig/modules/ipvs.modules
 
 ##### 插入
+
 	cat > a.txt <<EOF
 	#!/bin/bash 
 	modprobe -- ip_vs 
@@ -19,7 +20,7 @@
 	chmod 755 /etc/sysconfig/modules/ipvs.modules && bash /etc/sysconfig/modules/ipvs.modules &&
 	lsmod | grep -e ip_vs -e nf_conntrack_ipv4
 
-#### 安装docker
+#### 2.安装docker
 	yum install -y yum-utils device-mapper-persistent-data lvm2
 	yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 	yum update -y && yum install -y docker-ce	
@@ -35,7 +36,35 @@
 	mkdir -p /etc/systemd/system/docker.service.d
 	重启docker服务
 	systemctl daemon-reload && systemctl restart docker && systemctl enable docker
-#### 安装 Kubeadm （主从配置）
+#### 导入依赖的docker相关镜像
+
+	解压离线adm文件，用脚步导入到docker里
+	sh脚步导入kubeadm的 images
+
+	vim load-kubeadm-image.sh
+
+	#!/bin/bash
+	cd /home/k8s-master01/offlineZip/kubeadm-basic.images
+	ls . > /tmp/image-list.txt
+	for i in $( cat /tmp/image-list.txt )
+	do
+		docker load -i $i
+	done
+
+	rm -rf /tmp/image-list.txt
+	运行sh
+	load-kubeadm-image.sh
+##### 高可用支持（多个master节点。负载均衡，高可用）
+    在docker内，导入 ha-porxy保证负载均衡。拥有8种策略
+    导入keepalived支持高可用。以抢占虚拟ip的形式来保证高可用
+    docker load -i 离线包
+
+    使用对应的脚步，开启ha-proxy和keepalived。
+    注意配置虚拟ip。集群服务器，和端口安全检查，防止启动过程中的报错
+
+
+
+#### 3.安装 Kubeadm （主从配置）
 	cat <<EOF > /etc/yum.repos.d/kubernetes.repo 
 	[kubernetes] 
 	name=Kubernetes 
@@ -51,23 +80,8 @@
 	yum -y install kubeadm-1.15.1 kubectl-1.15.1 kubelet-1.15.1 
 	systemctl enable kubelet.service
 
-#### 初始化主节点
-	解压离线adm文件，用脚步导入到docker里
-	sh脚步导入kubeadm的 images 
 
-	vim load-kubeadm-image.sh
-
-	#!/bin/bash
-	cd /home/k8s-master01/offlineZip/kubeadm-basic.images
-	ls . > /tmp/image-list.txt
-	for i in $( cat /tmp/image-list.txt )
-	do 
-		docker load -i $i 
-	done
-
-	rm -rf /tmp/image-list.txt
-	运行sh 
-	load-kubeadm-image.sh
+#### 4.初始化主节点
     输出默认配置到新建文件
 	kubeadm config print init-defaults > kubeadm-config.yaml 
 
@@ -89,9 +103,9 @@
 	 初始化并且输出。同时加入自然颁发证书参数
 	 kubeadm init --config=kubeadm-config.yaml --upload-certs | tee kubeadm-init.log
 
-##### 按照输出log 加入主节点和工作节点
+##### 5.按照输出log 加入主节点和工作节点
 
-#### 部署扁平网络flannel
+#### 6.部署扁平网络flannel
 
 	wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 	kubectl apply -f kube-flannel.yml
