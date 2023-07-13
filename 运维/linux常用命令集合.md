@@ -36,3 +36,5 @@ ___
     rwx 4 2 1  -- 7 = 4+2+1 
     ex. 655 777
     小记：
+### linux 基础命令
+    grep、find、ps -aux、losf (打开句柄。linux 资源 文件 端口等都分配了一个句柄)、fdisk、mount、umount、df -h 、top 、curl 、scp、awk 、
